@@ -1,0 +1,125 @@
+.homepage-container {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.hero-section {
+    text-align: center;
+    padding: 4rem 1rem 3rem 1rem;
+}
+
+.hero-section h1 {
+    font-size: 3.5rem;
+    color: #f9fafb;
+    margin-bottom: 1rem;
+    font-weight: 800;
+}
+
+.hero-section p {
+    font-size: 1.25rem;
+    color: #d1d5db;
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-cta-button {
+    background-color: #4f46e5;
+    color: white;
+    padding: 1rem 2.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.hero-cta-button:hover {
+    background-color: #4338ca;
+    transform: translateY(-2px);
+}
+
+.stats-section {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    max-width: 900px;
+    margin: 2rem auto 4rem auto;
+    padding: 2rem;
+    background-color: rgba(30, 30, 30, 0.5); /* Semi-transparent dark background */
+    border: 1px solid #374151;
+    border-radius: 12px;
+}
+
+.stat-card {
+    text-align: center;
+    flex-basis: 200px;
+}
+
+.stat-card h2 {
+    font-size: 3rem;
+    color: #c4b5fd; /* Light purple accent */
+    margin: 0;
+    font-weight: 700;
+}
+
+.stat-card p {
+    margin-top: 0.5rem;
+    color: #9ca3af;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+.features-section {
+    max-width: 900px;
+    margin: 4rem auto;
+}
+
+.features-section h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    color: #e5e7eb;
+}
+
+.feature-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.feature-card {
+    background-color: #1f2937;
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: left;
+    color: #f9fafb;
+    text-decoration: none;
+    border: 1px solid #374151;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    border-color: #4f46e5;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.feature-card h3 {
+    margin-top: 0;
+    color: #a78bfa;
+    font-size: 1.5rem;
+}
+
+.feature-card p {
+    color: #d1d5db;
+    line-height: 1.6;
+}
+
+/* Animation for the container */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API Upload Test</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        form { border: 2px dashed #ccc; padding: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Test Image Upload</h1>
+    <p>This form will send a POST request to http://localhost:8000/api/upload/</p>
+    
+    <form action="http://localhost:8000/api/upload/" method="POST" enctype="multipart/form-data">
+        <label for="image_file">Choose an image to upload:</label>
+        <br><br>
+        <input type="file" name="image_file" id="image_file" required>
+        <br><br>
+        <input type="submit" value="Upload Image">
+    </form>
+</body>
+</html>

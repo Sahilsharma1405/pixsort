@@ -1,0 +1,59 @@
+# === GLOBAL IGNORE FOR BOTH BACKEND & FRONTEND ===
+
+# OS and Editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+
+# === FRONTEND (React) ===
+frontend/node_modules/
+frontend/build/
+frontend/.env
+frontend/.next/
+frontend/.cache/
+
+# Log files
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# === BACKEND (Django) ===
+backend/__pycache__/
+backend/**/*.py[cod]
+*.sqlite3
+*.log
+*.pot
+
+# Virtual environment
+backend/venv/
+backend/env/
+backend/.venv/
+
+# Django specific
+backend/db.sqlite3
+backend/media/
+backend/staticfiles/
+backend/.env
+backend/.env.*
+
+# Testing / coverage
+backend/htmlcov/
+backend/.coverage
+backend/coverage.xml
+backend/.pytest_cache/
+
+# Model files (optional)
+backend/*.pt  # yolov8n.pt or other model weights
+
+# === GENERAL FILES ===
+*.bak
+*.tmp
+*.old
+
+# === PYCHARM / IDEs ===
+.idea/
+
+# === ROOT FILES ===
+.hintrc

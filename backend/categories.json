@@ -1,0 +1,20 @@
+{
+  "Animals": [
+    "animal.n.01"
+  ],
+  "People": [
+    "person.n.01"
+  ],
+  "Vehicles": [
+    "vehicle.n.01"
+  ],
+  "Food": [
+    "food.n.01"
+  ],
+  "Plants": [
+    "plant.n.02"
+  ],
+  "Buildings": [
+    "building.n.01"
+  ]
+}
