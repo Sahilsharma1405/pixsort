@@ -8,8 +8,7 @@ from rest_framework.views import APIView
 
 from .analysis import analyze_image_and_categorize, load_category_map_from_json
 from .models import ProcessedImage
-from .serializers import ProcessedImageSerializer, UserSerializer
-
+from .serializers import ProcessedImageSerializer, UserSerializer,PublicImageSerializer 
 CATEGORY_MAP = load_category_map_from_json("categories.json")
 
 
@@ -102,10 +101,11 @@ class UserStatsView(APIView):
         }
         return Response(stats, status=status.HTTP_200_OK)
     
-class PublicImageListView(generics.ListAPIView):
-    """
-    An API view to return a list of all PUBLIC images.
-    """
-    queryset = ProcessedImage.objects.filter(is_public=True).select_related('owner').order_by('-uploaded_at')
-    permission_classes = [AllowAny] # <-- No login required
-    serializer_class = ProcessedImageSerializer
+class PublicImageListView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        all_images = list(ProcessedImage.objects.order_by('-uploaded_at'))
+        public_images = [img for img in all_images if img.is_public]
+        serializer = PublicImageSerializer(public_images, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

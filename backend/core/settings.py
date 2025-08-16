@@ -40,13 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
-    'allauth',                     # Required
-    'allauth.account',
     'rest_framework',
     'rest_framework.authtoken',
+    'allauth',
+    'allauth.account',
     'dj_rest_auth',
-
-
+    'dj_rest_auth.registration',
+    
     # Local Apps
     'corsheaders',
     'api',
@@ -175,4 +175,3 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
-

@@ -32,3 +32,9 @@ class UserSerializer(serializers.ModelSerializer):
         return user
     
 
+class PublicImageSerializer(serializers.ModelSerializer):
+    owner_username = serializers.ReadOnlyField(source='owner.username')
+
+    class Meta:
+        model = ProcessedImage
+        fields = ['id', 'image_file', 'owner_username', 'detailed_labels']
