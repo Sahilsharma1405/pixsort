@@ -12,6 +12,8 @@ import './App.css';
 import ProfilePage from './components/Profilepage';
 import Footer from './components/Footer';
 import PublicGallery from './components/PublicGallery';
+import MarketplacePagee from './components/MarketplacePagee';
+import MyPurchasesPage from './components/MyPurchasesPage';
 
 function App() {
     // --- FIX: Use the correct variable name `authTokens` (plural) ---
@@ -27,11 +29,13 @@ function App() {
                     {authTokens ? (
                         <>
                             <Link to="/profile" className="nav-link nav-user">Hello, {user?.username}</Link>
-                            <div className="dropdown">
-                                <span className="nav-link">Gallery</span>
+                            <Link to="/marketplace" className="nav-link">Marketplace</Link>
+                             <div className="dropdown">
+                                <span className="nav-link">My Library</span>
                                 <div className="dropdown-content">
                                     <Link to="/gallery">My Gallery</Link>
-                                    <Link to="/public-gallery">Public Gallery</Link>
+                                    <Link to="/my-purchases">My Purchases</Link>
+                                    <Link to="//public-gallery">Public Gallery</Link>
                                 </div>
                             </div>
                             <Link to="/upload" className="nav-link">Upload</Link>
@@ -39,6 +43,9 @@ function App() {
                         </>
                     ) : (
                         <>
+                            <Link to="/" className="nav-link">Home</Link>
+                            <Link to="/public-gallery" className="nav-link">Public Gallery</Link>
+                            <Link to="/marketplace" className="nav-link">Marketplace</Link>
                             <Link to="/login" className="nav-link">Login</Link>
                             <Link to="/signup" className="nav-link">Sign Up</Link>
                         </>
@@ -51,11 +58,15 @@ function App() {
                     <Route path="/" element={<HomePage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/signup" element={<SignupPage />} />
-                    <Route path="/profile" element={<PrivateRoute><ProfilePage/></PrivateRoute>} />
+                    <Route path="/public-gallery" element={<PublicGallery />} />
+                    <Route path="/marketplace" element={<MarketplacePagee />} />
+                    {/* Private Routes */}
                     <Route path="/upload" element={<PrivateRoute><ImageUploader /></PrivateRoute>} />
                     <Route path="/gallery" element={<PrivateRoute><Gallery /></PrivateRoute>} />
-                    <Route path="/public-gallery" element={<PublicGallery/>} />
                     <Route path="/gallery/:categoryName" element={<PrivateRoute><CategoryGallery /></PrivateRoute>} />
+                    <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+                    <Route path="/public-gallery" element={<PrivateRoute> <PublicGallery /></PrivateRoute>} />
+                    <Route path="/my-purchases" element={<PrivateRoute><MyPurchasesPage /></PrivateRoute>} />
                 </Routes>
             </main>
             <Footer/>

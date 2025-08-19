@@ -238,3 +238,30 @@
     gap: 0.5rem;
     cursor: pointer;
 }
+
+
+/* Add this to the end of ImageUploader.css */
+
+.action-btn.public-free {
+    background-color: #f9fafb;
+    border-color: #d1d5db;
+    color: #374151;
+}
+
+.sale-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.sale-form input, .sale-form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    font-family: inherit;
+}

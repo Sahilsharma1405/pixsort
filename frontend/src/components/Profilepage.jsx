@@ -1,22 +1,55 @@
-import React, { useState, useContext } from 'react';
+import React from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from '../utils/axiosInstance';
 import AuthContext from '../context/AuthContext';
 import './AuthForm.css';
 import './ProfilePage.css';
 
 function ProfilePage() {
-    const { logoutUser } = useContext(AuthContext);
+    const { user, logoutUser } = useContext(AuthContext);
+
+    // --- State for your existing logic ---
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword1, setNewPassword1] = useState('');
     const [newPassword2, setNewPassword2] = useState('');
 
+    // --- NEW: State for profile data ---
+    const [profile, setProfile] = useState({ payment_details: '' });
+
+    // --- NEW: useEffect to fetch profile data on load ---
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const response = await axios.get('/api/profile/');
+                setProfile(response.data);
+            } catch (error) {
+                console.error("Failed to fetch profile:", error);
+            }
+        };
+        fetchProfile();
+    }, []);
+
+    // --- NEW: Function to handle saving payment details ---
+    const handleProfileUpdate = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.put('/api/profile/', {
+                payment_details: profile.payment_details
+            });
+            alert("Payment details updated successfully!");
+        } catch (error) {
+            console.error("Failed to update profile:", error.response?.data);
+            alert(`Error: ${JSON.stringify(error.response?.data)}`);
+        }
+    };
+
+    // --- Your existing, working logic (UNCHANGED) ---
     const handleChangePassword = async (e) => {
         e.preventDefault();
         if (newPassword1 !== newPassword2) {
             alert("New passwords do not match!");
             return;
         }
-
         try {
             await axios.post('/api/auth/password/change/', {
                 old_password: oldPassword,
@@ -28,13 +61,10 @@ function ProfilePage() {
             setNewPassword1('');
             setNewPassword2('');
         } catch (error) {
-            // --- NEW: Improved error handling ---
             if (error.response) {
-                // The request was made and the server responded with a status code
                 console.error("Failed to change password:", error.response.data);
                 alert(`Error: ${JSON.stringify(error.response.data)}`);
             } else {
-                // Something happened in setting up the request that triggered an Error
                 console.error("A network error occurred:", error.message);
                 alert(`Network Error: ${error.message}`);
             }
@@ -48,7 +78,6 @@ function ProfilePage() {
                 alert("Account deactivated successfully.");
                 logoutUser();
             } catch (error) {
-                // --- NEW: Improved error handling ---
                 if (error.response) {
                     console.error("Failed to deactivate account:", error.response.data);
                     alert(`Error: ${JSON.stringify(error.response.data)}`);
@@ -60,9 +89,32 @@ function ProfilePage() {
         }
     };
 
-    // The rest of your JSX remains the same
     return (
         <div className="profile-container">
+            <h1 style={{ textAlign: 'center', width: '100%', gridColumn: '1 / -1' }}>
+                Profile for {user?.username}
+            </h1>
+
+            {/* --- NEW: JSX for the Seller Payment Details card --- */}
+            <div className="profile-card">
+                <h2>Seller Payment Details</h2>
+                <form onSubmit={handleProfileUpdate} className="auth-form" style={{ boxShadow: 'none', padding: 0 }}>
+                    <div className="form-group">
+                        <label htmlFor="payment_details">Payment Info (e.g., PayPal Email)</label>
+                        <textarea
+                            id="payment_details"
+                            rows="4"
+                            className="payment-textarea"
+                            value={profile.payment_details || ''}
+                            onChange={e => setProfile({...profile, payment_details: e.target.value})}
+                            placeholder="Enter your payment details here..."
+                        ></textarea>
+                    </div>
+                    <button type="submit" className="auth-button">Save Payment Info</button>
+                </form>
+            </div>
+
+            {/* --- Your existing JSX (UNCHANGED) --- */}
             <div className="profile-card">
                 <h2>Change Password</h2>
                 <form onSubmit={handleChangePassword} className="auth-form" style={{ boxShadow: 'none', padding: 0 }}>

@@ -5,10 +5,12 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from decimal import Decimal
+from .models import ProcessedImage, UserProfile
+from bson.decimal128 import Decimal128
 from .analysis import analyze_image_and_categorize, load_category_map_from_json
-from .models import ProcessedImage
-from .serializers import ProcessedImageSerializer, UserSerializer,PublicImageSerializer 
+# from .models import ProcessedImage
+from .serializers import ProcessedImageSerializer, UserSerializer,PublicImageSerializer,UserProfileSerializer
 CATEGORY_MAP = load_category_map_from_json("categories.json")
 
 
@@ -108,4 +110,66 @@ class PublicImageListView(APIView):
         all_images = list(ProcessedImage.objects.order_by('-uploaded_at'))
         public_images = [img for img in all_images if img.is_public]
         serializer = PublicImageSerializer(public_images, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class UserProfileView(generics.RetrieveUpdateAPIView):
+    serializer_class = UserProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        # Get or create a profile for the logged-in user
+        profile, created = UserProfile.objects.get_or_create(user=self.request.user)
+        return profile
+
+class MarketplaceListView(APIView):
+    """
+    Lists all images for sale using a manual Python filter for djongo compatibility.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        # Fetch all images and then filter in Python
+        all_images = list(ProcessedImage.objects.order_by('-uploaded_at'))
+        for_sale_images = [
+            img for img in all_images if img.for_sale and img.sold_to is None
+        ]
+        serializer = PublicImageSerializer(for_sale_images, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class MyPurchasesListView(generics.ListAPIView):
+    serializer_class = ProcessedImageSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return ProcessedImage.objects.filter(sold_to=self.request.user).order_by('-uploaded_at')
+
+class PurchaseImageView(APIView):
+    """Handles the purchase of an image."""
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk, *args, **kwargs):
+        try:
+            image = ProcessedImage.objects.get(pk=pk)
+        except ProcessedImage.DoesNotExist:
+            return Response({'error': 'Image not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if not image.for_sale or image.sold_to is not None:
+            return Response({'error': 'Image is not available for purchase.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if image.owner == request.user:
+            return Response({'error': 'You cannot purchase your own image.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # --- FIX: Convert the price to a standard Decimal BEFORE saving ---
+        if image.price is not None:
+            try:
+                # Convert from string or MongoDB's Decimal128 to Python's Decimal
+                image.price = Decimal(str(image.price))
+            except Exception as e:
+                return Response({'error': f'Invalid price format: {e}'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        image.sold_to = request.user
+        image.for_sale = False
+        image.save() # Now, the save method will have the correct data type
+        
+        serializer = ProcessedImageSerializer(image)
         return Response(serializer.data, status=status.HTTP_200_OK)
