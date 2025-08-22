@@ -35,7 +35,7 @@ function App() {
                                 <div className="dropdown-content">
                                     <Link to="/gallery">My Gallery</Link>
                                     <Link to="/my-purchases">My Purchases</Link>
-                                    <Link to="//public-gallery">Public Gallery</Link>
+                                    <Link to="/public-gallery">Public Gallery</Link>
                                 </div>
                             </div>
                             <Link to="/upload" className="nav-link">Upload</Link>

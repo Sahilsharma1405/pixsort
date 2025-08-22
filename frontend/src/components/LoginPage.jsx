@@ -1,13 +1,16 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import AuthContext from '../context/AuthContext.jsx';
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // <-- Import icons
 import './AuthForm.css';
 
 function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    // Get both loginUser and the loading state from the context
     const { loginUser, loading } = useContext(AuthContext);
+
+    // --- NEW: State for password visibility ---
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,11 +25,24 @@ function LoginPage() {
                     <label htmlFor="username">Username</label>
                     <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required />
                 </div>
+                
+                {/* --- MODIFIED: Password field with visibility toggle --- */}
                 <div className="form-group">
                     <label htmlFor="password">Password</label>
-                    <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                    <div className="password-input-wrapper">
+                        <input 
+                            type={showPassword ? "text" : "password"} 
+                            id="password" 
+                            value={password} 
+                            onChange={(e) => setPassword(e.target.value)} 
+                            required 
+                        />
+                        <span onClick={() => setShowPassword(!showPassword)} className="password-toggle-icon">
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </span>
+                    </div>
                 </div>
-                {/* The button is now disabled and shows a message during the API call */}
+
                 <button type="submit" className="auth-button" disabled={loading}>
                     {loading ? "Logging in..." : "Log In"}
                 </button>

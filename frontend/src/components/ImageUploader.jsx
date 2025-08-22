@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import './ImageUploader.css';
 
 function ImageUploader() {
-    // --- Your existing state ---
     const [selectedFile, setSelectedFile] = useState(null);
     const [preview, setPreview] = useState(null);
     const [analysisResult, setAnalysisResult] = useState(null);
@@ -13,11 +12,10 @@ function ImageUploader() {
     const [isDragging, setIsDragging] = useState(false);
     const navigate = useNavigate();
 
-    // --- State for the new multi-step flow ---
     const [uploadStep, setUploadStep] = useState('initial'); // initial -> analyzed -> listing -> confirmed
     const [saleDetails, setSaleDetails] = useState({ title: '', description: '', price: '' });
 
-    // --- Your existing useEffect ---
+
     useEffect(() => {
         if (!selectedFile) {
             setPreview(null);
@@ -83,7 +81,6 @@ function ImageUploader() {
         handleFileSelect(file);
     };
 
-    // --- NEW: Function to handle setting visibility or listing for sale ---
     const updateImageSettings = async (isPublic, isForSale) => {
         if (!analysisResult) return;
         
@@ -106,7 +103,7 @@ function ImageUploader() {
         }
     };
     
-    // --- NEW: Handler for the sale form submission ---
+
     const handleSaleFormSubmit = (e) => {
         e.preventDefault();
         updateImageSettings(true, true);

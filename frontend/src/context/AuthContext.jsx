@@ -1,6 +1,5 @@
 import React, { createContext, useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { jwtDecode } from 'jwt-decode';
 import axiosInstance from '../utils/axiosInstance';
 
 const AuthContext = createContext();
@@ -53,9 +52,7 @@ export const AuthProvider = ({ children }) => {
             }
             setLoading(false);
         };
-        
         checkUserLoggedIn();
-    // This is the correct and safe dependency array
     }, [authTokens, logoutUser]);
 
     const contextData = {

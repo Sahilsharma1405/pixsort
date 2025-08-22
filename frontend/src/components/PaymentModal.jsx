@@ -9,12 +9,12 @@ function PaymentModal({ isOpen, onClose, onSubmit, isProcessing }) {
             <div className="modal-content">
                 <button className="close-button" onClick={onClose}>×</button>
                 <h2>Secure Payment</h2>
-                <p className="payment-disclaimer">This is a demo form. Do not enter real card details.</p>
+                <p className="payment-disclaimer">This is a demo form.</p>
                 
                 <form onSubmit={onSubmit} className="payment-form">
                     <div className="form-group">
                         <label htmlFor="cardName">Name on Card</label>
-                        <input type="text" id="cardName" placeholder="John M. Doe" required />
+                        <input type="text" id="cardName" placeholder="Enter Name as per card" required />
                     </div>
                     <div className="form-group">
                         <label htmlFor="cardNumber">Card Number</label>
